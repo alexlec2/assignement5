@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <title>Simple Vue Environment</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- production version, optimized for size and speed
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+    <!-- Axios (easy API integartion library/package) -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 h-full">
+    <div id="parentComponent" class="grid grid-cols-2 gap-4 place-content-center h-full p-[50px]">
+        <div id="likeComponent" class="shadow-2xl bg-white py-10 px-20 rounded-lg grid place-content-center">
+            <div v-if="error">
+                <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+            </div>
+            <div v-else-if="loading">Loading...</div>
+            <div v-else class="grid place-content-center gap-5">
+                <div v-if="selectedColor === 0">
+                    <img src="./images/blackTshirt.png" style="height: 200px" alt="product">
+                </div>
+                <div v-if="selectedColor === 1">
+                    <img src="./images/yellowTshirt.png" style="height: 200px" alt="product">
+                </div>
+                <div class="flex justify-center gap-5">
+                    <div v-for="(record, index) in records" :key="records.id" @click="updateVariant(index)" class="w-[80px] text-center rounded-full bg-blue-500 hover:bg-red-500 text-white">
+                        {{ record.color }}
+                    </div>
+                </div>
+                <div class="flex justify-center gap-5">
+                    <div>
+                        <button @click="addCountLikes()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Like: {{ records[selectedColor].countLikes }}
+                        </button>
+                    </div>
+                    <div>
+                        <button @click="addCountDislikes()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Dislike: {{ records[selectedColor].countDislikes }}
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="historicComponent" class="shadow-2xl bg-white py-10 px-20 rounded-lg grid place-content-center">
+            <div v-if="error">
+                <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+            </div>
+            <div v-else-if="loading">Loading...</div>
+            <div v-else class="grid place-content-center gap-5">
+                <div>
+                    <p>You can find three VueJS items below: the Tshirt images, the choice of the colors and the number of likes and dislikes</p>
+                </div>
+                <div class="h-[320px] w-full overflow-y-auto">
+                    <table class="text-center w-full">
+                        <thead class= "border-b bg-gray-800 sticky top-0">
+                        <tr>
+                            <th class="text-sm font-medium text-white px-3 py-4">Color</th>
+                            <th class="text-sm font-medium text-white px-3 py-4">Type</th>
+                            <th class="text-sm font-medium text-white px-3 py-4">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="record in records" :key="record.id" class="bg-white border-b">
+                            <td class="text-sm text-gray-900 font-light px-3 py-4 whitespace-nowrap">{{ record.id_data}}</td>
+                            <td class="text-sm text-gray-900 font-light px-3 py-4 whitespace-nowrap">{{ record.type}}</td>
+                            <td class="text-sm text-gray-900 font-light px-3 py-4 whitespace-nowrap">{{ record.date}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/parentComponent.js"></script>
+    <script src="./js/likeComponent.js"></script>
+    <script src="./js/historicComponent.js"></script>
+
+</body>
+</html>
